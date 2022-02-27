@@ -1,4 +1,5 @@
 const loadPlayers = () =>{
+    document.getElementById('player-container').innerHTML="";
     const searchValue = document.getElementById("search-input").value;
     const url = `https://www.thesportsdb.com/api/v1/json/2/searchplayers.php?p=${searchValue}`;
     fetch(url)
@@ -7,24 +8,29 @@ const loadPlayers = () =>{
 }
 
 const searchPlayers = players =>{ 
+    
     // console.log(players)
-    for(const player of players){
+    for(const player of players){ 
         const playerContainer =document.getElementById('player-container');
         const div =document.createElement('div');
         const {strThumb, strPlayer, strNationality, idPlayer}=player
-        div.innerHTML =`
-         <img class="w-50" src="${strThumb}" />
+        div.innerHTML =`<div class="card border border-3 py-5 mb-4 rounded-3">
+         <div class="mb-3"><img class="w-50 rounded-3" src="${strThumb}" /></div>
          <h2>Name: ${strPlayer}</h2>
          <h3>Country: ${strNationality}</h3>
-         <button onclick="playerId(${idPlayer})">Player Details</button>
-      
+         <div class="all-buttons pt-3">
+         <button class="py-2 px-4 btn btn-dark">Delete<button>
+         <button class="py-2 px-4 btn btn-primary" onclick="playerId(${idPlayer})">Player Details</button>
+         </div>
+        </div>
         `;
         playerContainer.appendChild(div)
     }
-  
+    document.getElementById('search-input').value="";
 }
 
 const playerId = (id) =>{
+    document.getElementById('players-details').innerHTML="";
     const idUrl =(`https://www.thesportsdb.com/api/v1/json/2/lookupplayer.php?id=${id}`)
     fetch(idUrl)
     .then(res => res.json())
@@ -37,10 +43,13 @@ const playerDetails = (details) =>{
     const singlePlayer =document.getElementById('players-details');
     const div1 =document.createElement('div');
     const {strThumb, strPlayer, strNationality}=details
-    div1.innerHTML =`
-     <img class="w-50" src="${strThumb}" />
-     <h2>Name: ${strPlayer}</h2>
-     <h3>Country: ${strNationality}</h3>
+    div1.innerHTML =`<div class="card border border-3 py-5 my-5 rounded-3">
+    <div class="mb-3">
+    <img class="w-50 rounded-3" src="${strThumb}" />
+    </div>
+    <h2>Name: ${strPlayer}</h2>
+    <h3>Country: ${strNationality}</h3>
+   </div>
     `;
     singlePlayer.appendChild(div1)
 }
